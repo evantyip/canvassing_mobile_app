@@ -1,21 +1,26 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Button, View, Text, StyleSheet } from 'react-native';
+import { observer } from 'mobx-react';
 
-function LoginScreen({ navigation }) {
-  const onLoginButtonPress = () => {
-    navigation.reset({
+class LoginScreen extends Component {
+  onLoginButtonPress = () => {
+    this.props.store.setToken('this is a test');
+    this.props.navigation.reset({
       index: 0,
       routes: [{ name: 'Search' }],
     });
-    navigation.push('Search');
+    this.props.navigation.push('Search');
   };
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <Text>What is going on</Text>
-      <Button title="Go to Search" onPress={onLoginButtonPress} />
-    </View>
-  );
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text>Open up App.js to start working on your app!</Text>
+        <Text>What is going on</Text>
+        <Button title="Go to Search" onPress={this.onLoginButtonPress} />
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -27,4 +32,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default observer(LoginScreen);
