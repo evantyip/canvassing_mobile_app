@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { observer } from 'mobx-react';
 
-function SearchScreen(props) {
-  return (
-    <View style={styles.container}>
-      <Text>This is search screen</Text>
-    </View>
-  );
+class SearchScreen extends Component {
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text>This is search screen</Text>
+        <Text>Token is {this.props.store.token} </Text>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -18,4 +22,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearchScreen;
+export default observer(SearchScreen);
