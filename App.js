@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AppStore from './app/stores/AppStore';
 import LoginScreen from './app/screens/LoginScreen';
 import SearchScreen from './app/screens/SearchScreen';
+import SearchResultsScreen from './app/screens/SearchResultsScreen';
 
 const Stack = createStackNavigator();
 const store = new AppStore();
@@ -24,6 +25,14 @@ export default function App() {
           }}
         >
           {(props) => <SearchScreen {...props} store={store} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="SearchResults"
+          options={{
+            headerTitle: 'Search Results',
+          }}
+        >
+          {(props) => <SearchResultsScreen {...props} store={store} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

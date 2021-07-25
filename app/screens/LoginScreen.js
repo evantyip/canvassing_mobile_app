@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { observer } from 'mobx-react';
-import { Button, TextInput } from 'react-native-paper';
+import {
+  Button,
+  Divider,
+  Headline,
+  Subheading,
+  TextInput,
+} from 'react-native-paper';
+import backendBaseURL from '../constants/url';
 import axios from 'axios';
 
 class LoginScreen extends Component {
@@ -10,6 +17,8 @@ class LoginScreen extends Component {
 
     this.state = {
       sessionId: '',
+      firstName: '',
+      lastName: '',
       error: null,
     };
   }
@@ -21,12 +30,15 @@ class LoginScreen extends Component {
       };
 
       const res = await axios.post(
-        'https://d39fb3mlb4nn9s.cloudfront.net/auth/token/obtain/',
+        backendBaseURL + '/auth/token/obtain/',
         requestParameters
       );
 
       const { access } = res.data;
       this.props.store.setToken(access);
+      this.props.store.setVolunteerName(
+        this.state.firstName + ' ' + this.state.lastName
+      );
       this.props.navigation.reset({
         index: 0,
         routes: [{ name: 'Search' }],
@@ -40,12 +52,26 @@ class LoginScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Login</Text>
-        {this.state.error && <Text>THERE IS AN ERROR </Text>}
+        {/* Modal here? */}
+        {this.state.error && <Text>{this.state.error}</Text>}
+        <Subheading>Session ID</Subheading>
         <TextInput
           mode="outlined"
           placeholder={this.state.sessionId}
           onChangeText={(text) => this.setState({ sessionId: text })}
+        />
+        <Divider />
+        <Subheading>First Name</Subheading>
+        <TextInput
+          mode="outlined"
+          placeholder="EX: Mary"
+          onChangeText={(text) => this.setState({ firstName: text })}
+        />
+        <Headline>Last Name</Headline>
+        <TextInput
+          mode="outlined"
+          placeholder="EX: Smith"
+          onChangeText={(text) => this.setState({ lastName: text })}
         />
         <Button mode="contained" onPress={this.onLoginButtonPress}>
           Login
@@ -59,7 +85,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    justifyContent: 'center',
+    alignContent: 'flex-start',
+    justifyContent: 'flex',
   },
 });
 
