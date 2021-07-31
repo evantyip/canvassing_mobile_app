@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { observer } from 'mobx-react';
 import {
@@ -11,21 +11,16 @@ import {
 import backendBaseURL from '../constants/url';
 import axios from 'axios';
 
-class LoginScreen extends Component {
-  constructor(props) {
-    super(props);
+const LoginScreen = ({ store, navigation }) => {
+  const [sessionId, setSessionId] = useState('admin');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [error, setError] = useState();
 
-    this.state = {
-      sessionId: 'admin',
-      firstName: '',
-      lastName: '',
-      error: null,
-    };
-  }
-  onLoginButtonPress = async () => {
+  const onLoginButtonPress = async () => {
     try {
       const requestParameters = {
-        username: this.state.sessionId.toLowerCase(),
+        username: sessionId.toLowerCase(),
         password: 'password123',
       };
 
@@ -35,51 +30,47 @@ class LoginScreen extends Component {
       );
 
       const { access } = res.data;
-      this.props.store.setToken(access);
-      this.props.store.setVolunteerName(
-        this.state.firstName + ' ' + this.state.lastName
-      );
-      this.props.navigation.reset({
+      store.setToken(access);
+      store.setVolunteerName(firstName + ' ' + lastName);
+      navigation.reset({
         index: 0,
         routes: [{ name: 'Search' }],
       });
-      this.props.navigation.push('Search');
+      navigation.push('Search');
     } catch (e) {
-      this.setState({ error: e });
+      setError(e);
     }
   };
 
-  render() {
-    return (
-      <View style={styles.container}>
-        {/* Modal here? */}
-        {this.state.error && <Text>{this.state.error}</Text>}
-        <Subheading>Session ID</Subheading>
-        <TextInput
-          mode="outlined"
-          placeholder={this.state.sessionId}
-          onChangeText={(text) => this.setState({ sessionId: text })}
-        />
-        <Divider />
-        <Subheading>First Name</Subheading>
-        <TextInput
-          mode="outlined"
-          placeholder="EX: Mary"
-          onChangeText={(text) => this.setState({ firstName: text })}
-        />
-        <Subheading>Last Name</Subheading>
-        <TextInput
-          mode="outlined"
-          placeholder="EX: Smith"
-          onChangeText={(text) => this.setState({ lastName: text })}
-        />
-        <Button mode="contained" onPress={this.onLoginButtonPress}>
-          Login
-        </Button>
-      </View>
-    );
-  }
-}
+  return (
+    <View style={styles.container}>
+      {/* Modal here? */}
+      {error && <Text>{error}</Text>}
+      <Subheading>Session ID</Subheading>
+      <TextInput
+        mode="outlined"
+        placeholder={sessionId}
+        onChangeText={(text) => setSessionId(text)}
+      />
+      <Divider />
+      <Subheading>First Name</Subheading>
+      <TextInput
+        mode="outlined"
+        placeholder="EX: Mary"
+        onChangeText={(text) => setFirstName(text)}
+      />
+      <Subheading>Last Name</Subheading>
+      <TextInput
+        mode="outlined"
+        placeholder="EX: Smith"
+        onChangeText={(text) => setLastName(text)}
+      />
+      <Button mode="contained" onPress={onLoginButtonPress}>
+        Login
+      </Button>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

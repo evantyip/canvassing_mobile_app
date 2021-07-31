@@ -6,6 +6,7 @@ import AppStore from './app/stores/AppStore';
 import LoginScreen from './app/screens/LoginScreen';
 import SearchScreen from './app/screens/SearchScreen';
 import SearchResultsScreen from './app/screens/SearchResultsScreen';
+import DataEntryScreen from './app/screens/DataEntryScreen';
 
 const Stack = createStackNavigator();
 const store = new AppStore();
@@ -33,6 +34,14 @@ export default function App() {
           }}
         >
           {(props) => <SearchResultsScreen {...props} store={store} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="DataEntry"
+          options={{
+            headerTitle: 'Enter Canvassing Stuff',
+          }}
+        >
+          {(props) => <DataEntryScreen {...props} store={store} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
