@@ -16,7 +16,7 @@ class LoginScreen extends Component {
     super(props);
 
     this.state = {
-      sessionId: '',
+      sessionId: 'admin',
       firstName: '',
       lastName: '',
       error: null,
@@ -67,7 +67,7 @@ class LoginScreen extends Component {
           placeholder="EX: Mary"
           onChangeText={(text) => this.setState({ firstName: text })}
         />
-        <Headline>Last Name</Headline>
+        <Subheading>Last Name</Subheading>
         <TextInput
           mode="outlined"
           placeholder="EX: Smith"

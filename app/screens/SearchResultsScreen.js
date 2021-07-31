@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import {
   Button,
@@ -7,22 +8,37 @@ import {
   Headline,
   Subheading,
   TextInput,
+  List,
 } from 'react-native-paper';
-import backendBaseURL from '../constants/url';
-import axios from 'axios';
 
 class SearchResultsScreen extends Component {
   constructor(props) {
     super(props);
-
     this.state = {};
+  }
+
+  selectVoter(key) {
+    const voter = this.props.store.voterHash[key];
+    this.props.store.setSelectedVoter(voter);
+    console.log(this.props.store.selectedVoter);
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>SDFJSKFDJLSFJK</Text>
-        <Text>{this.props.store.searchResults.length}</Text>
+        <List.Section>
+          <List.Subheader>Search Results</List.Subheader>
+          {this.props.store.searchResults.map((voter) => {
+            const name = voter.name_first + ' ' + voter.name_last;
+            return (
+              <List.Item
+                key={voter.voter_id}
+                title={name}
+                onPress={() => this.selectVoter(voter.voter_id)}
+              />
+            );
+          })}
+        </List.Section>
       </View>
     );
   }

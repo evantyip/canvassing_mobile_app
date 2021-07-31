@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { observer } from 'mobx-react';
 import { Button, Headline, TextInput, Subheading } from 'react-native-paper';
 import backendBaseURL from '../constants/url';
 import axios from 'axios';
 
-class SearchScreen extends Component {
+class DataEntryScreen extends Component {
   constructor(props) {
     super(props);
 
@@ -16,7 +16,7 @@ class SearchScreen extends Component {
     };
   }
 
-  onSearchButtonPress = async () => {
+  onSubmitButtonPress = async () => {
     try {
       const options = {
         headers: {
@@ -47,22 +47,7 @@ class SearchScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Headline>Voter Search</Headline>
-        <Subheading>House Number</Subheading>
-        <TextInput
-          mode="outlined"
-          placeholder="EX: 20908"
-          onChangeText={(text) => this.setState({ houseNumber: text })}
-        />
-        <Subheading>Street Name</Subheading>
-        <TextInput
-          mode="outlined"
-          placeholder="EX: Abalar"
-          onChangeText={(text) => this.setState({ streetName: text })}
-        />
-        <Button mode="contained" onPress={this.onSearchButtonPress}>
-          Search
-        </Button>
+        <Headline>Input data</Headline>
       </View>
     );
   }
@@ -77,4 +62,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default observer(SearchScreen);
+export default observer(DataEntryScreen);
